@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 import path from 'path';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
@@ -162,26 +162,26 @@ export default async function handler(req, res) {
             await chrome.kill();
 
 
-            if (userId) {
-                // Récupérer uniquement l'ID du dernier rapport créé
-                const lastReport = await prisma.report.findFirst({
-                    orderBy: { createdAt: 'desc' },
-                    select: { id: true }
-                });
-                if (!lastReport) {
-                    throw new Error('Aucun rapport trouvé.');
-                }
-                // Enregistrement du rapport dans la base de données
-                const pdfRecord = await prisma.pdf.create({
-                    data: {
-                        reportId: lastReport.id,
-                        pdfUrlMobile: mobileReportUrl,
-                        pdfUrlDesktop: desktopReportUrl
-                    }
-                });
+            // if (userId) {
+            //     // Récupérer uniquement l'ID du dernier rapport créé
+            //     const lastReport = await prisma.report.findFirst({
+            //         orderBy: { createdAt: 'desc' },
+            //         select: { id: true }
+            //     });
+            //     if (!lastReport) {
+            //         throw new Error('Aucun rapport trouvé.');
+            //     }
+            //     // Enregistrement du rapport dans la base de données
+            //     const pdfRecord = await prisma.pdf.create({
+            //         data: {
+            //             reportId: lastReport.id,
+            //             pdfUrlMobile: mobileReportUrl,
+            //             pdfUrlDesktop: desktopReportUrl
+            //         }
+            //     });
 
-                console.log('Rapport enregistré dans la base de données:', pdfRecord);
-            }
+            //     console.log('Rapport enregistré dans la base de données:', pdfRecord);
+            // }
 
             const transporter = nodemailer.createTransport({
                 service: "hotmail",

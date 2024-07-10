@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 // Fonction pour récupérer l'ID utilisateur à partir du token
 function getUserIdFromToken(token) {
@@ -69,18 +69,18 @@ export default async function handler(req, res) {
 
         const domainName = getDomainName(url);
 
-        // Enregistrement du rapport dans la base de données
-        if (userId) {
-            await prisma.report.create({
-                data: {
-                    userId: userId,
-                    siteName: domainName,
-                }
-            });
-            console.log('Rapport enregistré dans la base de données.');
-        } else {
-            console.log('Utilisateur invité, rapport non enregistré dans la base de données.');
-        }
+        // // Enregistrement du rapport dans la base de données
+        // if (userId) {
+        //     await prisma.report.create({
+        //         data: {
+        //             userId: userId,
+        //             siteName: domainName,
+        //         }
+        //     });
+        //     console.log('Rapport enregistré dans la base de données.');
+        // } else {
+        //     console.log('Utilisateur invité, rapport non enregistré dans la base de données.');
+        // }
 
         // Envoyer une réponse HTTP 200 OK après avoir traité la requête avec succès
         return res.status(200).json({

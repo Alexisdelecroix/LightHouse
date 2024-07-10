@@ -1,9 +1,9 @@
 import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 // Fonction pour récupérer l'ID utilisateur à partir du token
 function getUserIdFromToken(token) {
@@ -75,18 +75,18 @@ export default async function handler(req, res) {
         },
       };
 
-      if (userId) {
-        // Récupérer uniquement l'ID du dernier rapport créé
-        lastReport = await prisma.report.findFirst({
-          orderBy: { createdAt: "desc" },
-          select: { id: true },
-        });
+      // if (userId) {
+      //   // Récupérer uniquement l'ID du dernier rapport créé
+      //   lastReport = await prisma.report.findFirst({
+      //     orderBy: { createdAt: "desc" },
+      //     select: { id: true },
+      //   });
 
-        if (!lastReport) {
-          throw new Error("Aucun rapport trouvé.");
-        }
-        console.log("Dernier rapport ID:", lastReport.id);
-      }
+      //   if (!lastReport) {
+      //     throw new Error("Aucun rapport trouvé.");
+      //   }
+      //   console.log("Dernier rapport ID:", lastReport.id);
+      // }
 
       const mobileScores = await generateScores(url, mobileOptions);
 

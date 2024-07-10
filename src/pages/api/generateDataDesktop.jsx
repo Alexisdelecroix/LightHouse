@@ -1,9 +1,9 @@
 import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 function getUserIdFromToken(token) {
   try {
@@ -77,33 +77,33 @@ export default async function handler(req, res) {
         },
       };
 
-      if (userId) {
-        // Récupérer uniquement l'ID du dernier rapport créé
-        lastReport = await prisma.report.findFirst({
-          orderBy: { createdAt: "desc" },
-          select: { id: true },
-        });
+      // if (userId) {
+      //   // Récupérer uniquement l'ID du dernier rapport créé
+      //   lastReport = await prisma.report.findFirst({
+      //     orderBy: { createdAt: "desc" },
+      //     select: { id: true },
+      //   });
 
-        if (!lastReport) {
-          throw new Error("Aucun rapport trouvé.");
-        }
-        console.log("Dernier rapport ID:", lastReport.id);
-      }
+      //   if (!lastReport) {
+      //     throw new Error("Aucun rapport trouvé.");
+      //   }
+      //   console.log("Dernier rapport ID:", lastReport.id);
+      // }
 
       const desktopScores = await generateScores(url, desktopOptions);
 
-      // Enregistrer les scores uniquement si l'utilisateur est connecté
-      if (userId) {
-        await prisma.desktopPerformanceScore.create({
-          data: {
-            reportId: lastReport.id, // Utilisez l'ID du dernier rapport
-            performance: desktopScores.performance,
-            seo: desktopScores.seo,
-            accessibility: desktopScores.accessibility,
-            bestpractices: desktopScores.bestPractices,
-          },
-        });
-      }
+      // // Enregistrer les scores uniquement si l'utilisateur est connecté
+      // if (userId) {
+      //   await prisma.desktopPerformanceScore.create({
+      //     data: {
+      //       reportId: lastReport.id, // Utilisez l'ID du dernier rapport
+      //       performance: desktopScores.performance,
+      //       seo: desktopScores.seo,
+      //       accessibility: desktopScores.accessibility,
+      //       bestpractices: desktopScores.bestPractices,
+      //     },
+      //   });
+      // }
 
       res.status(200).json(desktopScores);
     } catch (error) {
