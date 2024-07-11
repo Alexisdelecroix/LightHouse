@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 import path from 'path';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
-// import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
@@ -43,6 +43,16 @@ function getDomainName(url) {
 
 export default async function handler(req, res) {
 
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+
+    if (req.method === "OPTIONS") {
+        res.status(200).end();
+        return;
+      }
     if (req.method === "POST") {
         const { email, url } = req.body;
         console.log("Données reçues:", { email, url });
@@ -162,26 +172,26 @@ export default async function handler(req, res) {
             await chrome.kill();
 
 
-            // if (userId) {
-            //     // Récupérer uniquement l'ID du dernier rapport créé
-            //     const lastReport = await prisma.report.findFirst({
-            //         orderBy: { createdAt: 'desc' },
-            //         select: { id: true }
-            //     });
-            //     if (!lastReport) {
-            //         throw new Error('Aucun rapport trouvé.');
-            //     }
-            //     // Enregistrement du rapport dans la base de données
-            //     const pdfRecord = await prisma.pdf.create({
-            //         data: {
-            //             reportId: lastReport.id,
-            //             pdfUrlMobile: mobileReportUrl,
-            //             pdfUrlDesktop: desktopReportUrl
-            //         }
-            //     });
+            if (userId) {
+                // Récupérer uniquement l'ID du dernier rapport créé
+                const lastReport = await prisma.report.findFirst({
+                    orderBy: { createdAt: 'desc' },
+                    select: { id: true }
+                });
+                if (!lastReport) {
+                    throw new Error('Aucun rapport trouvé.');
+                }
+                // Enregistrement du rapport dans la base de données
+                const pdfRecord = await prisma.pdf.create({
+                    data: {
+                        reportId: lastReport.id,
+                        pdfUrlMobile: mobileReportUrl,
+                        pdfUrlDesktop: desktopReportUrl
+                    }
+                });
 
-            //     console.log('Rapport enregistré dans la base de données:', pdfRecord);
-            // }
+                console.log('Rapport enregistré dans la base de données:', pdfRecord);
+            }
 
             const transporter = nodemailer.createTransport({
                 service: "hotmail",

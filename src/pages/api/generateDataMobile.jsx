@@ -1,9 +1,9 @@
 import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
-// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 // Fonction pour récupérer l'ID utilisateur à partir du token
 function getUserIdFromToken(token) {
@@ -21,6 +21,17 @@ function getUserIdFromToken(token) {
 }
 
 export default async function handler(req, res) {
+
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
   if (req.method === "POST") {
     const { url } = req.body;
 
@@ -75,18 +86,18 @@ export default async function handler(req, res) {
         },
       };
 
-      // if (userId) {
-      //   // Récupérer uniquement l'ID du dernier rapport créé
-      //   lastReport = await prisma.report.findFirst({
-      //     orderBy: { createdAt: "desc" },
-      //     select: { id: true },
-      //   });
+      if (userId) {
+        // Récupérer uniquement l'ID du dernier rapport créé
+        lastReport = await prisma.report.findFirst({
+          orderBy: { createdAt: "desc" },
+          select: { id: true },
+        });
 
-      //   if (!lastReport) {
-      //     throw new Error("Aucun rapport trouvé.");
-      //   }
-      //   console.log("Dernier rapport ID:", lastReport.id);
-      // }
+        if (!lastReport) {
+          throw new Error("Aucun rapport trouvé.");
+        }
+        console.log("Dernier rapport ID:", lastReport.id);
+      }
 
       const mobileScores = await generateScores(url, mobileOptions);
 

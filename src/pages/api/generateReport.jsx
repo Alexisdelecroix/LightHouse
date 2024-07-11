@@ -1,8 +1,8 @@
-// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 // Fonction pour récupérer l'ID utilisateur à partir du token
 function getUserIdFromToken(token) {
@@ -43,6 +43,18 @@ function getDomainName(url) {
 }
 
 export default async function handler(req, res) {
+
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+    if (req.method === "OPTIONS") {
+        res.status(200).end();
+        return;
+      }
+
+      
     if (req.method === 'POST') {
         const { url } = req.body;
 
@@ -69,18 +81,18 @@ export default async function handler(req, res) {
 
         const domainName = getDomainName(url);
 
-        // // Enregistrement du rapport dans la base de données
-        // if (userId) {
-        //     await prisma.report.create({
-        //         data: {
-        //             userId: userId,
-        //             siteName: domainName,
-        //         }
-        //     });
-        //     console.log('Rapport enregistré dans la base de données.');
-        // } else {
-        //     console.log('Utilisateur invité, rapport non enregistré dans la base de données.');
-        // }
+        // Enregistrement du rapport dans la base de données
+        if (userId) {
+            await prisma.report.create({
+                data: {
+                    userId: userId,
+                    siteName: domainName,
+                }
+            });
+            console.log('Rapport enregistré dans la base de données.');
+        } else {
+            console.log('Utilisateur invité, rapport non enregistré dans la base de données.');
+        }
 
         // Envoyer une réponse HTTP 200 OK après avoir traité la requête avec succès
         return res.status(200).json({
