@@ -6,11 +6,6 @@
         "use": "@vercel/next"
       }
     ],
-    "functions": {
-      "api/**/*.js": {
-        "includeFiles": "node_modules/lighthouse/shared/localization/locales/**"
-      }
-    },
     "routes": [
       {
         "src": "/api/(.*)",
