@@ -129,6 +129,9 @@ export default async function handler(req, res) {
     //     await chrome.kill();
     //   }
     // }
+
+    res.status(200).json({ message: 'Traitement rapide réussi' });
+
   } else {
     res.status(405).json({ error: "Méthode non autorisée." });
   }
