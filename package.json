@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next dev"
   },
   "dependencies": {
     "@prisma/client": "^5.16.1",
@@ -17,7 +17,7 @@
     "fs": "^0.0.1-security",
     "gsap": "^3.12.5",
     "jsonwebtoken": "^9.0.2",
-    "lighthouse": "^11.7.0",
+    "lighthouse": "^12.1.0",
     "lottie-react": "^2.4.0",
     "next": "14.2.4",
     "node-fetch": "^3.3.2",
