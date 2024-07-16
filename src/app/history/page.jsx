@@ -1,23 +1,37 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import style from './history.module.css';
+import { jwtDecode } from 'jwt-decode';
 
 export default function History() {
     const [userReports, setUserReports] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const router = useRouter();
 
-    // Vérification du token
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-            // Redirection vers la page de connexion si aucun token n'est présent
             router.push('/connexion');
             return;
         }
 
-        // Fonction asynchrone pour récupérer les rapports de l'utilisateur depuis l'API
+        try {
+            const decodedToken = jwtDecode(token);
+            const currentTime = Date.now() / 1000; 
+            if (decodedToken.exp <= currentTime) {
+                localStorage.removeItem('token');
+                router.push('/connexion'); // Rediriger vers la page de connexion si le token est expiré
+                return;
+            }
+        } catch (error) {
+            localStorage.removeItem('token');
+            router.push('/connexion'); // Rediriger vers la page de connexion si le token est invalide
+            return;
+        }
+
         const fetchUserReports = async () => {
             try {
                 const response = await fetch('/api/getUserReports', {
@@ -32,13 +46,17 @@ export default function History() {
                     setUserReports(data.reports);
                 } else {
                     console.error('Erreur lors de la récupération des rapports:', response.statusText);
+                    setError('Erreur lors de la récupération des rapports');
                 }
             } catch (error) {
                 console.error('Erreur lors de la récupération des rapports:', error);
+                setError('Erreur lors de la récupération des rapports');
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchUserReports(); // Appeler la fonction pour récupérer les rapports au chargement de la page
+        fetchUserReports(); 
     }, [router]);
 
     return (
@@ -54,7 +72,6 @@ export default function History() {
                         <div className={style.report}>
                             <p>{report.siteName}</p>
                             <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
-                            {/* Accéder aux liens PDF desktop et mobile */}
                             {report.pdf.map((pdf, pdfIndex) => (
                                 <div key={pdfIndex}>
                                     <a href={pdf.pdfUrlDesktop} target="_blank" rel="noopener noreferrer">Télécharger PDF (Desktop)</a>

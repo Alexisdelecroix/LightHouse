@@ -1,24 +1,44 @@
-'use client'
+"use client";
 
 import style from './header.module.css';
 import Image from 'next/image';
 import logo from '../../../public/images/logo.png';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
     const [open, setOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         // Vérifier si l'utilisateur est connecté au chargement du composant
         const token = localStorage.getItem('token');
-        setIsAuthenticated(!!token);
-    }, []);
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                const currentTime = Date.now() / 1000;
+                if (decodedToken.exp > currentTime) {
+                    setIsAuthenticated(true);
+                } else {
+                    localStorage.removeItem('token');
+                    setIsAuthenticated(false);
+                    router.push('/connexion'); // Rediriger vers la page de connexion si le token est expiré
+                }
+            } catch (error) {
+                // Supprimer le token s'il n'est pas valide
+                localStorage.removeItem('token');
+                setIsAuthenticated(false);
+                router.push('/connexion'); // Rediriger vers la page de connexion si le token est invalide
+            }
+        } 
+    }, [router]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setIsAuthenticated(false)
+        setIsAuthenticated(false);
         window.location.href = '/';
     };
 

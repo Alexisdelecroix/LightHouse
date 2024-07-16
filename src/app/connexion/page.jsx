@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 import React, { useState } from 'react';
-import style from "./connexion.module.css"
+import style from "./connexion.module.css";
 
 export default function Connexion() {
     const [showRegistrationForm, setShowRegistrationForm] = useState(false); 
@@ -11,7 +11,6 @@ export default function Connexion() {
     const [errorMessage, setErrorMessage] = useState(''); 
     const [successMessage, setSuccessMessage] = useState(''); 
 
-    // Fonction pour basculer entre le formulaire de connexion et le formulaire d'inscription
     const handleShowRegistrationForm = (e) => {
         e.preventDefault();
         setShowRegistrationForm(!showRegistrationForm);
@@ -19,12 +18,9 @@ export default function Connexion() {
         setSuccessMessage('');
     };
 
-    // Fonction pour gérer l'inscription
     const handleRegister = async (e) => {
         e.preventDefault();
-        
 
-        // Vérification de la force du mot de passe
         const passwordValidation = isStrongPassword(password);
         if (!passwordValidation.isValid) {
             let errorMessage = 'Le mot de passe doit contenir';
@@ -47,13 +43,11 @@ export default function Connexion() {
             return;
         }
 
-        // Vérification si les mots de passe correspondent
         if (password !== confirmPassword) {
             setErrorMessage('Les mots de passe ne correspondent pas');
             return;
         }
 
-        // Appel API pour l'inscription
         try {
             const response = await fetch('/api/register', {
                 method: 'POST',
@@ -103,7 +97,6 @@ export default function Connexion() {
                 setErrorMessage('');
         
                 window.location.href = '/history';
-
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Erreur lors de la connexion.');
@@ -114,7 +107,6 @@ export default function Connexion() {
         }
     };
 
-    // Fonction pour vérifier la force du mot de passe
     const isStrongPassword = (password_admin) => {
         const lengthCheck = password_admin.length >= 8;
         const lowercaseCheck = /[a-z]/.test(password_admin);
