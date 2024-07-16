@@ -33,9 +33,9 @@ export default async function handler(req, res) {
     return;
   }
 
-  const document = require('./node_modules/lighthouse/package.json'); 
-const version = document.version; 
-console.log("LightHouse version: ",version)
+//   const document = require('./node_modules/lighthouse/package.json'); 
+// const version = document.version; 
+// console.log("LightHouse version: ",version)
 
   
   if (req.method === "POST") {
