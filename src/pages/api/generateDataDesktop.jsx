@@ -33,9 +33,13 @@ export default async function handler(req, res) {
     return;
   }
 
-  const document = require('./node_modules/lighthouse/package.json'); 
-const version = document.version; 
-console.log("LightHouse version: ",version)
+//   const document = require('./node_modules/lighthouse/package.json'); 
+// const version = document.version; 
+// console.log("LightHouse version: ",version)
+
+const jwt = require('./node_modules/jwt-decode/package.json'); 
+const version = jwt.version; 
+console.log("jwt version: ",version)
 
   
   if (req.method === "POST") {
