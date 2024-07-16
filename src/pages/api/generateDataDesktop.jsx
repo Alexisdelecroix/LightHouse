@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+
+
 function getUserIdFromToken(token) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -30,6 +32,10 @@ export default async function handler(req, res) {
     res.status(200).end();
     return;
   }
+
+  const document = require('./node_modules/lighthouse/package.json'); 
+const version = document.version; 
+console.log("LightHouse version: ",version)
 
   
   if (req.method === "POST") {
