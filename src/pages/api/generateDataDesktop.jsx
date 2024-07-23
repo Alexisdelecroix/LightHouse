@@ -37,10 +37,6 @@ export default async function handler(req, res) {
 // const version = document.version; 
 // console.log("LightHouse version: ",version)
 
-const jwt = require('./node_modules/jwt-decode/package.json'); 
-const version = jwt.version; 
-console.log("jwt version: ",version)
-
   
   if (req.method === "POST") {
     const { url } = req.body;

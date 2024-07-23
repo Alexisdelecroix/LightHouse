@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -21,44 +22,38 @@ function isStrongPassword(password_admin) {
     };
 }
 
-export default async function register(req, res) {
-    if (req.method === 'POST') {
+export async function POST(req) {
+    try {
         // Récupération des données du corps de la requête
-        const { email, password } = req.body;
+        const { email, password } = await req.json();
 
-          // Vérification de la force du mot de passe
-          const passwordValidation = isStrongPassword(password);
-          if (!passwordValidation.isValid) {
-              let errorMessage = 'Le mot de passe doit contenir';
-  
-              if (!passwordValidation.lengthCheck) {
-                  errorMessage += ' au moins 8 caractères,';
-              }
-  
-              if (!passwordValidation.uppercaseCheck) {
-                  errorMessage += ' au moins une majuscule,';
-              }
-  
-              if (!passwordValidation.lowercaseCheck) {
-                  errorMessage += ' au moins une minuscule,';
-              }
-  
-              if (!passwordValidation.digitCheck) {
-                  errorMessage += ' au moins un chiffre,';
-              }
-  
-              if (!passwordValidation.specialCharCheck) {
-                  errorMessage += ' au moins un caractère spécial';
-              }
-  
-              res.status(400).json({
-                  message: errorMessage
-              });
-  
-              return;
-          }
+        // Vérification de la force du mot de passe
+        const passwordValidation = isStrongPassword(password);
+        if (!passwordValidation.isValid) {
+            let errorMessage = 'Le mot de passe doit contenir';
 
-          try {
+            if (!passwordValidation.lengthCheck) {
+                errorMessage += ' au moins 8 caractères,';
+            }
+
+            if (!passwordValidation.uppercaseCheck) {
+                errorMessage += ' au moins une majuscule,';
+            }
+
+            if (!passwordValidation.lowercaseCheck) {
+                errorMessage += ' au moins une minuscule,';
+            }
+
+            if (!passwordValidation.digitCheck) {
+                errorMessage += ' au moins un chiffre,';
+            }
+
+            if (!passwordValidation.specialCharCheck) {
+                errorMessage += ' au moins un caractère spécial';
+            }
+            return NextResponse.json({ message: errorMessage }, { status: 400 })
+        }
+        try {
             // Vérification si l'email existe déjà dans la base de données
             const existingUser = await prisma.user.findUnique({
                 where: {
@@ -67,7 +62,7 @@ export default async function register(req, res) {
             });
 
             if (existingUser) {
-                return res.status(409).json({ message: 'Cette adresse e-mail est déjà utilisée' });
+                return NextResponse.json({ message: "Cette adresse e-mail est déjà utilisée" })
             }
 
             // Génération du sel et hachage du mot de passe
@@ -82,14 +77,13 @@ export default async function register(req, res) {
                 },
             });
 
-            // Réponse avec un statut 201 et les données de l'utilisateur créé
-            res.status(201).json(newUser);
+            return NextResponse.json({ newUser }, { status: 201 })
+
         } catch (error) {
-            // En cas d'erreur, répondre avec un statut 500 et le message d'erreur
-            res.status(500).json({ message: "User creation failed", error: error.message });
+            return NextResponse.json({ message: "Echec de la cration d'un utilisateur", error: error.message })
         }
-    } else {
-        // Si la méthode HTTP n'est pas POST, répondre avec un statut 405 (Méthode non autorisée)
-        res.status(405).json({ message: 'Method not allowed' });
+    }
+    catch (error) {
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }

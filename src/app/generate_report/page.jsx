@@ -26,7 +26,7 @@ export default function GenerateReport() {
 
       // Etape 1: Appel à l'API pour récupérer les données desktop en format JSON
       setIsLoading("desktop");
-      const reportResponse = await fetch(`${apiUrl}/api/generateReport`, {
+      const reportResponse = await fetch(`${apiUrl}/report/generateReport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

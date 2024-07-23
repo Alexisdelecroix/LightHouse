@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
+import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -8,6 +9,7 @@ const prisma = new PrismaClient();
 function getUserIdFromToken(token) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Decoded JWT:', decoded);  // Ajout de journalisation
         return decoded.id;
     } catch (error) {
         if (error instanceof jwt.JsonWebTokenError) {
@@ -42,44 +44,32 @@ function getDomainName(url) {
     return null;
 }
 
-export default async function handler(req, res) {
-
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-    if (req.method === "OPTIONS") {
-        res.status(200).end();
-        return;
-      }
-
-      const document = require('./node_modules/lighthouse/package.json'); 
-const version = document.version; 
-console.log("LightHouse version: ",version)
-
-      
-    if (req.method === 'POST') {
-        const { url } = req.body;
+export async function POST(request) {
+    try {
+        const { url } = await request.json();
+        
+        if (!url) {
+            return NextResponse.json({ error: "URL manquante dans la requête." }, { status: 400 });
+        }
 
         // Vérification de l'URL
         const urlExists = await checkUrlExists(url);
         if (!urlExists) {
-            return res.status(400).json({ error: "L'URL fournie n'est pas valide ou accessible." });
+            return NextResponse.json({ error: "L'URL fournie n'est pas valide ou accessible." }, { status: 400 });
         }
 
         let userId = null;
 
         // Vérification de la présence du token
-        if (req.headers.authorization) {
-            const token = req.headers.authorization.split(' ')[1];
+        const authHeader = request.headers.get('authorization');
+        if (authHeader) {
+            const token = authHeader.split(' ')[1];
+            console.log('Token:', token);  // Ajout de journalisation
             userId = getUserIdFromToken(token);
             console.log('User ID from token:', userId);
 
             if (!userId) {
                 console.log('Token invalide ou expiré, utilisateur invité.');
-            } else {
-
             }
         }
 
@@ -99,12 +89,13 @@ console.log("LightHouse version: ",version)
         }
 
         // Envoyer une réponse HTTP 200 OK après avoir traité la requête avec succès
-        return res.status(200).json({
-            message: 'Rapport généré avec succès.',
+        return NextResponse.json({
+            message: 'Rapport généré avec succès',
             domainName
-        });
+        }, { status: 200 });
 
-    } else {
-        return res.status(405).json({ error: 'Méthode non autorisée.' });
+    } catch (error) {
+        console.error('Erreur lors du traitement de la requête:', error);  // Ajout de journalisation
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }

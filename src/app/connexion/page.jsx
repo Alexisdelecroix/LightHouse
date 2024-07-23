@@ -49,7 +49,7 @@ export default function Connexion() {
         }
 
         try {
-            const response = await fetch('/api/register', {
+            const response = await fetch('/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function Connexion() {
         e.preventDefault();
   
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

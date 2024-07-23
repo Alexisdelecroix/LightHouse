@@ -34,7 +34,7 @@ export default function History() {
 
         const fetchUserReports = async () => {
             try {
-                const response = await fetch('/api/getUserReports', {
+                const response = await fetch('/report/getUserReports', {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`
