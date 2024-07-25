@@ -95,7 +95,7 @@ export async function POST(request) {
         }, { status: 200 });
 
     } catch (error) {
-        console.error('Erreur lors du traitement de la requête:', error);  // Ajout de journalisation
+        console.error('Erreur lors du traitement de la requête:', error);
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }

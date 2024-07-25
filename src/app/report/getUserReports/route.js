@@ -2,16 +2,20 @@ import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
+
 const prisma = new PrismaClient();
 
 export async function GET(request) {
     try {
+        // Récupération de l'en-tête d'autorisation de la requête
         const authHeader = request.headers.get('authorization');
         
+        // Vérification de la présence et de la validité de l'en-tête d'autorisation
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return NextResponse.json({ erreur: 'En-tête d\'autorisation manquante ou mal formée' }, { status: 400 });
         }
         
+        // Extraction du token du header
         const token = authHeader.split(' ')[1];
 
         try {

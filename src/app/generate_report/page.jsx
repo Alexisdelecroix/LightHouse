@@ -42,7 +42,7 @@ export default function GenerateReport() {
         throw new Error(reportData.error || "Erreur lors de la génération du rapport.");
       }
 
-      const desktopResponse = await fetch(`${apiUrl}/api/generateDataDesktop`, {
+      const desktopResponse = await fetch(`${apiUrl}/report/generateDataDesktop`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

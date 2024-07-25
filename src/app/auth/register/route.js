@@ -22,10 +22,10 @@ function isStrongPassword(password_admin) {
     };
 }
 
-export async function POST(req) {
+export async function POST(request) {
     try {
         // Récupération des données du corps de la requête
-        const { email, password } = await req.json();
+        const { email, password } = await request.json();
 
         // Vérification de la force du mot de passe
         const passwordValidation = isStrongPassword(password);

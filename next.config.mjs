@@ -1,20 +1,25 @@
+// import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        path: false,
-      };
-    }
-    return config;
-  },
+  // webpack: (config, { isServer }) => {
+  //   if (!isServer) {
+  //     config.plugins.push(new NodePolyfillPlugin());
+  //   }
+
+  //     // Ignore les modules problématiques
+  //     config.externals = [
+  //       'lighthouse/core/config/config-helpers.js',
+  //       'lighthouse/core/lib/i18n/i18n.js',
+  //       // Ajoutez d'autres modules problématiques ici
+  //     ];
   
+  //   return config;
+  // },
   async headers() {
     return [
       {
-        // Correspondance avec toutes les routes API
         source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
