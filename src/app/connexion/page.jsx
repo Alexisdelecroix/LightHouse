@@ -4,13 +4,16 @@ import React, { useState } from 'react';
 import style from "./connexion.module.css";
 
 export default function Connexion() {
-    const [showRegistrationForm, setShowRegistrationForm] = useState(false); 
-    const [email, setEmail] = useState(''); 
-    const [password, setPassword] = useState(''); 
-    const [confirmPassword, setConfirmPassword] = useState(''); 
-    const [errorMessage, setErrorMessage] = useState(''); 
-    const [successMessage, setSuccessMessage] = useState(''); 
+    const [showRegistrationForm, setShowRegistrationForm] = useState(false);
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+
+    // Fonction pour basculer entre le formulaire de connexion et le formulaire d'inscription
     const handleShowRegistrationForm = (e) => {
         e.preventDefault();
         setShowRegistrationForm(!showRegistrationForm);
@@ -21,6 +24,7 @@ export default function Connexion() {
     const handleRegister = async (e) => {
         e.preventDefault();
 
+        // Validation du mot de passe
         const passwordValidation = isStrongPassword(password);
         if (!passwordValidation.isValid) {
             let errorMessage = 'Le mot de passe doit contenir';
@@ -43,6 +47,7 @@ export default function Connexion() {
             return;
         }
 
+        // Vérification de la correspondance des mots de passe
         if (password !== confirmPassword) {
             setErrorMessage('Les mots de passe ne correspondent pas');
             return;
@@ -77,7 +82,6 @@ export default function Connexion() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-  
         try {
             const response = await fetch('/auth/login', {
                 method: 'POST',
@@ -95,7 +99,7 @@ export default function Connexion() {
                 setEmail('');
                 setPassword('');
                 setErrorMessage('');
-        
+
                 window.location.href = '/history';
             } else {
                 const errorData = await response.json();
@@ -128,60 +132,60 @@ export default function Connexion() {
         <>
             <section className={style.section}>
                 <div>
-                {showRegistrationForm ? ( 
-                    <form className={style.form} onSubmit={handleRegister}>
-                        <h1 className={style.titre}>Inscription</h1>
-                        {errorMessage && <p className={style.error}>{errorMessage}</p>}
-                        {successMessage && <p className={style.success}>{successMessage}</p>}
-                        <input
-                            className={style.input}
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <input
-                            className={style.input}
-                            type="password"
-                            placeholder="Mot de passe"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <input
-                            className={style.input}
-                            type="password"
-                            placeholder="Confirmer le mot de passe"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                        <button className={style.btn} type="submit">{`S'inscrire`}</button>
-                        <button className={style.btn2} onClick={handleShowRegistrationForm}>
-                            Retour à la connexion
-                        </button>
-                    </form>
-                ) : (
-                    <form className={style.form} onSubmit={handleLogin}>
-                     
-                        <h1 className={style.titre}>Connexion</h1>
-                        {errorMessage && <p className={style.error}>{errorMessage}</p>}
-                        <input className={style.input}
-                         type="email"
-                          placeholder="Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          />
-                        <input className={style.input}
-                         type="password" placeholder="Mot de passe"
-                         value={password}
-                         onChange={(e) => setPassword(e.target.value)}
-                         />
-                        <button className={style.btn} type="submit">Se connecter</button>
-                        <button className={style.btn2} onClick={handleShowRegistrationForm}>
-                            {`Vous n'êtes pas encore inscrit`}
-                        </button>
-                    </form>
-                )}
-                       </div>
+                    {showRegistrationForm ? (
+                        <form className={style.form} onSubmit={handleRegister}>
+                            <h1 className={style.titre}>Inscription</h1>
+                            {errorMessage && <p className={style.error}>{errorMessage}</p>}
+                            {successMessage && <p className={style.success}>{successMessage}</p>}
+                            <input
+                                className={style.input}
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <input
+                                className={style.input}
+                                type="password"
+                                placeholder="Mot de passe"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <input
+                                className={style.input}
+                                type="password"
+                                placeholder="Confirmer le mot de passe"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                            />
+                            <button className={style.btn} type="submit">{`S'inscrire`}</button>
+                            <button className={style.btn2} onClick={handleShowRegistrationForm}>
+                                Retour à la connexion
+                            </button>
+                        </form>
+                    ) : (
+                        <form className={style.form} onSubmit={handleLogin}>
+
+                            <h1 className={style.titre}>Connexion</h1>
+                            {errorMessage && <p className={style.error}>{errorMessage}</p>}
+                            <input className={style.input}
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <input className={style.input}
+                                type="password" placeholder="Mot de passe"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <button className={style.btn} type="submit">Se connecter</button>
+                            <button className={style.btn2} onClick={handleShowRegistrationForm}>
+                                {`Vous n'êtes pas encore inscrit`}
+                            </button>
+                        </form>
+                    )}
+                </div>
             </section>
         </>
     );

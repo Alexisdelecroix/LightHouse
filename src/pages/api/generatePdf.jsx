@@ -48,11 +48,11 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
     res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
-
     if (req.method === "OPTIONS") {
         res.status(200).end();
         return;
       }
+
     if (req.method === "POST") {
         const { email, url } = req.body;
         console.log("Données reçues:", { email, url });
@@ -162,6 +162,9 @@ export default async function handler(req, res) {
             // Définir les URL pour accéder aux rapports
             let desktopReportUrl = `/reports/${path.basename(desktopReportPath)}`;
             let mobileReportUrl = `/reports/${path.basename(mobileReportPath)}`;
+
+            console.log(desktopReportUrl);
+             console.log(mobileReportUrl);
 
             // Ajuster les URL si l'utilisateur est identifié
             if (userId) {

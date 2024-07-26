@@ -7,13 +7,16 @@ import style from './generate.module.css';
 export default function GenerateReport() {
   const [email, setEmail] = useState("");
   const [url, setUrl] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const [desktopScores, setDesktopScores] = useState(null);
   const [mobileScores, setMobileScores] = useState(null);
   const [desktopReportUrl, setDesktopReportUrl] = useState(null);
   const [mobileReportUrl, setMobileReportUrl] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  
 
   const handleSendReport = async (e) => {
     e.preventDefault();
@@ -42,7 +45,7 @@ export default function GenerateReport() {
         throw new Error(reportData.error || "Erreur lors de la génération du rapport.");
       }
 
-      const desktopResponse = await fetch(`${apiUrl}/report/generateDataDesktop`, {
+      const desktopResponse = await fetch(`${apiUrl}/api/generateDataDesktop`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -157,7 +160,6 @@ export default function GenerateReport() {
         )}
 
         <section className={style.container}>
-          {/* Affiche les scores de performance pour la version ordinateur si disponibles */}
           {desktopScores && (
             <>
               <div className={style.title_container}>
@@ -196,7 +198,6 @@ export default function GenerateReport() {
             </>
           )}
 
-          {/* Affiche les scores de performance pour la version mobile si disponibles */}
           {mobileScores && (
             <div className={style.score_container}>
               <h2>Scores de performance - Version mobile</h2>
@@ -231,7 +232,6 @@ export default function GenerateReport() {
         </section>
 
 
-        {/* Affiche le message de succès avec les liens vers les rapports PDF */}
         {successMessage && (
           <div className={style.success_message}>
             <div>

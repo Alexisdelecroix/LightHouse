@@ -19,7 +19,9 @@ export default function History() {
         }
 
         try {
+            // Décoder le token JWT pour obtenir ses informations (payload)
             const decodedToken = jwtDecode(token);
+            // Obtenir le temps actuel en secondes (JWT utilise des timestamps en secondes)
             const currentTime = Date.now() / 1000; 
             if (decodedToken.exp <= currentTime) {
                 localStorage.removeItem('token');
