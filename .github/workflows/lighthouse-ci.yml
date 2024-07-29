@@ -1,11 +1,11 @@
 name: Lighthouse CI
 
-on:
-  # repository_dispatch:
-  #   types: [trigger_lighthouse_ci]
+# on:
+#   # repository_dispatch:
+#   #   types: [trigger_lighthouse_ci]
 on: [push]
 jobs:
-  lighthouse:
+  lighthouseci:
     runs-on: ubuntu-latest
 
     steps:
