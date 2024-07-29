@@ -1,25 +1,33 @@
 name: Lighthouse CI
 
-# on:
-#   # repository_dispatch:
-#   #   types: [trigger_lighthouse_ci]
 on: [push]
+
 jobs:
   lhci:
-  name : Lighthouse
+    name: Lighthouse
     runs-on: ubuntu-latest
 
     steps:
-        uses: actions/checkout@v4
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
 
       - name: Install Lighthouse CI
-          - run: lhci collect --additive --config=.lighthouserc.mobile.js
-      - run: lhci collect --additive --config=.lighthouserc.desktop.js
-       - run: lhci upload
-      - run: lhci assert
+        run: npm install -g @lhci/cli
+
+      - name: Collect Lighthouse results for mobile
+        run: lhci collect --additive --config=.lighthouserc.mobile.js
+
+      - name: Collect Lighthouse results for desktop
+        run: lhci collect --additive --config=.lighthouserc.desktop.js
+
+      - name: Upload results
+        run: lhci upload
+
+      - name: Assert results
+        run: lhci assert
+
       # - name: Set environment variable for URL
       #   run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
 
