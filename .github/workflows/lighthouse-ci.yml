@@ -38,7 +38,6 @@ jobs:
     env:
       API_TOKEN: ${{ secrets.API_TOKEN }}
 
-
       # - name: Set environment variable for URL
       #   run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
 
