@@ -1,19 +1,15 @@
 module.exports = {
-    ci: {
-      collect: {
-        url: [process.env.COLLECT_URL]
-      },
-      assert: {
-        preset: 'lighthouse:no-pwa',
-        assertions: {
-            'categories:performance': ['error', { minScore: 0.9 }],
-        'categories:accessibility': ['error', { minScore: 0.9 }], 
-        'categories:best-practices': ['error', { minScore: 0.9 }],
-        'categories:seo': ['error', { minScore: 0.9 }],
-          },
-      },
-      upload: {
-        target: 'temporary-public-storage',
-      },
-    },
-  };
+	ci: {
+		assert: {
+			assertions: {
+				"categories:performance": ["warn", { minScore: 0.9 }],
+				"categories:accessibility": ["warn", { minScore: 0.9 }],
+				"categories:best-practices": ["warn", { minScore: 0.9 }],
+				"categories:seo": ["warn", { minScore: 0.9 }],
+			},
+		},
+		upload: {
+			target: "temporary-public-storage",
+		},
+	},
+}

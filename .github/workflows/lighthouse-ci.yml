@@ -1,40 +1,39 @@
 name: Lighthouse CI
 
 on:
-  repository_dispatch:
-    types: [trigger_lighthouse_ci]
-
+  # repository_dispatch:
+  #   types: [trigger_lighthouse_ci]
+on: [push]
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
       - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli@0.8.x
+          - run: lhci collect --additive --config=.lighthouserc.mobile.js
+      - run: lhci collect --additive --config=.lighthouserc.desktop.js
+       - run: lhci upload
+      - run: lhci assert
+      # - name: Set environment variable for URL
+      #   run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
 
-      - name: Set environment variable for URL
-        run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
+      # - name: Run Lighthouse CI
+      #   run: lhci autorun --config=lighthouserc.js
+      #   env:
+      #     LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUBTOKEN }}
+      #     COLLECT_URL: ${{ env.COLLECT_URL }}
 
-      - name: Run Lighthouse CI
-        run: lhci autorun --config=lighthouserc.js
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUBTOKEN }}
-          COLLECT_URL: ${{ env.COLLECT_URL }}
-
-      - name: Send report to API
-        run: |
-          REPORT_JSON=$(cat .lighthouseci/manifest.json)
-          curl -X POST http://localhost:3000/api/receive-report \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.API_TOKEN }}" \
-            -d "{\"email\": \"${{ github.event.client_payload.email }}\", \"report\": $REPORT_JSON}"
+      # - name: Send report to API
+      #   run: |
+      #     REPORT_JSON=$(cat .lighthouseci/manifest.json)
+      #     curl -X POST http://localhost:3000/api/receive-report \
+      #       -H "Content-Type: application/json" \
+      #       -H "Authorization: Bearer ${{ secrets.API_TOKEN }}" \
+      #       -d "{\"email\": \"${{ github.event.client_payload.email }}\", \"report\": $REPORT_JSON}"
         env:
           API_TOKEN: ${{ secrets.API_TOKEN }}

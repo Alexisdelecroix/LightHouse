@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "lighthouse:desktop": "yarn build && lhci collect --config=.lighthouserc.desktop.js && lhci upload && lhci assert",
+    "lighthouse:mobile": "yarn build && lhci collect --config=.lighthouserc.mobile.js && lhci upload && lhci assert"
   },
   "dependencies": {
     "@prisma/client": "^5.17.0",
