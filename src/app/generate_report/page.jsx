@@ -325,7 +325,7 @@ export default function GenerateReport() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch('/api/trigger-audit', {
+      const response = await fetch('/api/triggerAudit', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

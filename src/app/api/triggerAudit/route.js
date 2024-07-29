@@ -8,11 +8,11 @@ export async function POST(request) {
       }
 
 
-      const response = await fetch(`https://api.github.com/repos/Alexisdelecroix/Project-LightHouse/dispatche`, {
+      const response = await fetch(`https://api.github.com/repos/Alexisdelecroix/Project-LightHouse/dispatches`, {
         method: 'POST',
         headers: {
           'Accept': 'application/vnd.github.v3+json',
-          'Authorization': `token ${process.env.GITHUB_TOKEN}`,
+          'Authorization': `token ${process.env.GITHUBTOKEN}`,
         },
         body: JSON.stringify({
           event_type: 'trigger_lighthouse_ci',
