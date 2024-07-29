@@ -1,7 +1,7 @@
 module.exports = {
     ci: {
       collect: {
-        url: ['https://www.flexbeton.fr/']
+        staticDistDir: "./public/",
       },
       assert: {
         preset: 'lighthouse:no-pwa',
