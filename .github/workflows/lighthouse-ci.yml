@@ -9,27 +9,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Collect Lighthouse results for mobile
-        run: lhci collect --additive --config=.lighthouserc.mobile.js
+      - name: Build project
+        run: npm run build
 
-      - name: Collect Lighthouse results for desktop
-        run: lhci collect --additive --config=.lighthouserc.desktop.js
+      - name: Run Lighthouse for mobile
+        run: npm run lighthouse:mobile
 
-      - name: Upload results
-        run: lhci upload
-
-      - name: Assert results
-        run: lhci assert
+      - name: Run Lighthouse for desktop
+        run: npm run lighthouse:desktop
 
     env:
       API_TOKEN: ${{ secrets.API_TOKEN }}
+
 
       # - name: Set environment variable for URL
       #   run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
