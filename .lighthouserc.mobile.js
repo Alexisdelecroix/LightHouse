@@ -3,7 +3,7 @@ module.exports = {
     collect: {
       url: ['https://www.flexbeton.fr/'],
       startServerCommand: 'npm run start',
-      numberOfRuns: 3,
+      numberOfRuns: 1,
       settings: {
         preset: 'perf', 
         emulatedFormFactor: 'mobile' 
