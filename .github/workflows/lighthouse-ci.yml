@@ -23,7 +23,7 @@ jobs:
         run: npm install -g @lhci/cli@0.8.x
 
       - name: Run Lighthouse CI
-        run: lhci autorun 
+        run: lhci autorun --collect.url=${{ https://www.flexbeton.fr/ }}
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
