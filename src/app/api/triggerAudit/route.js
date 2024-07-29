@@ -13,6 +13,7 @@ export async function POST(request) {
         headers: {
           'Accept': 'application/vnd.github.v3+json',
           'Authorization': `token ${process.env.GITHUBTOKEN}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           event_type: 'trigger_lighthouse_ci',
