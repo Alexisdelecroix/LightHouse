@@ -1,7 +1,6 @@
 module.exports = {
     ci: {
       collect: {
-        staticDistDir: './public', // Mettez ici le chemin vers le répertoire contenant vos fichiers statiques
         url: ['https://www.flexbeton.fr/']
       },
       assert: {
