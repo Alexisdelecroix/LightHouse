@@ -20,11 +20,20 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Run Lighthouse for mobile
-        run: npm run lighthouse:mobile
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
 
-      - name: Run Lighthouse for desktop
-        run: npm run lighthouse:desktop
+      - name: Collect Lighthouse results for mobile
+        run: lhci collect --additive --config=.lighthouserc.mobile.js
+
+      - name: Collect Lighthouse results for desktop
+        run: lhci collect --additive --config=.lighthouserc.desktop.js
+
+      - name: Upload results
+        run: lhci upload
+
+      - name: Assert results
+        run: lhci assert
 
     env:
       API_TOKEN: ${{ secrets.API_TOKEN }}
