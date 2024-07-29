@@ -5,7 +5,8 @@ name: Lighthouse CI
 #   #   types: [trigger_lighthouse_ci]
 on: [push]
 jobs:
-  lighthouseci:
+  lhci:
+  name : Lighthouse
     runs-on: ubuntu-latest
 
     steps:
