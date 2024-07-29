@@ -1,6 +1,8 @@
 name: Lighthouse CI
 
-on: [push]
+on:
+  repository_dispatch:
+    types: [trigger_lighthouse_ci]
 
 jobs:
   lhci:
