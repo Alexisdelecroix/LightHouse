@@ -6,7 +6,6 @@ on:
 
 jobs:
   lhci:
-    name: Lighthouse
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +25,10 @@ jobs:
         run: npm install -g @lhci/cli
 
       - name: Collect Lighthouse results for mobile
-        run: lhci collect --additive --config=.lighthouserc.mobile.js
+        run: lhci collect --config=.lighthouserc.mobile.js
 
       - name: Collect Lighthouse results for desktop
-        run: lhci collect --additive --config=.lighthouserc.desktop.js
+        run: lhci collect --config=.lighthouserc.desktop.js
 
       - name: Upload results
         run: lhci upload
@@ -38,21 +37,4 @@ jobs:
         run: lhci assert
 
     env:
-      API_TOKEN: ${{ secrets.API_TOKEN }}
-
-      # - name: Set environment variable for URL
-      #   run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
-
-      # - name: Run Lighthouse CI
-      #   run: lhci autorun --config=lighthouserc.js
-      #   env:
-      #     LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUBTOKEN }}
-      #     COLLECT_URL: ${{ env.COLLECT_URL }}
-
-      # - name: Send report to API
-      #   run: |
-      #     REPORT_JSON=$(cat .lighthouseci/manifest.json)
-      #     curl -X POST http://localhost:3000/api/receive-report \
-      #       -H "Content-Type: application/json" \
-      #       -H "Authorization: Bearer ${{ secrets.API_TOKEN }}" \
-      #       -d "{\"email\": \"${{ github.event.client_payload.email }}\", \"report\": $REPORT_JSON}"
+      API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
