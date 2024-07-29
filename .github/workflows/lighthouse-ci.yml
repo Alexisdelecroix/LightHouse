@@ -28,6 +28,9 @@ jobs:
       - name: Assert results
         run: lhci assert
 
+    env:
+      API_TOKEN: ${{ secrets.API_TOKEN }}
+
       # - name: Set environment variable for URL
       #   run: echo "COLLECT_URL=${{ github.event.client_payload.url }}" >> $GITHUB_ENV
 
@@ -44,5 +47,3 @@ jobs:
       #       -H "Content-Type: application/json" \
       #       -H "Authorization: Bearer ${{ secrets.API_TOKEN }}" \
       #       -d "{\"email\": \"${{ github.event.client_payload.email }}\", \"report\": $REPORT_JSON}"
-        env:
-          API_TOKEN: ${{ secrets.API_TOKEN }}

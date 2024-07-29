@@ -1,22 +1,24 @@
 module.exports = {
-	ci: {
-		collect: {
-			startServerCommand: "yarn start",
-			url: [
-				"http://localhost:3000?mobile",
-				"http://localhost:3000/blog/hexagonal-architecture-front-end?mobile",
-			],
-			settings: {
-				chromeFlags: "--no-sandbox",
-				locale: "fr-FR",
-				onlyCategories: [
-					"performance",
-					"accessibility",
-					"best-practices",
-					"seo",
-					"pwa",
-				],
-			},
-		},
-	},
-}
+    ci: {
+      collect: {
+        url: ['https://www.flexbeton.fr/'],
+        startServerCommand: 'npm run start',
+        numberOfRuns: 3,
+        settings: {
+          preset: 'mobile',
+        },
+      },
+      upload: {
+        target: 'temporary-public-storage',
+      },
+      assert: {
+        assertions: {
+          'categories:performance': ['error', {minScore: 0.9}],
+          'categories:accessibility': ['error', {minScore: 0.9}],
+          'categories:best-practices': ['error', {minScore: 0.9}],
+          'categories:seo': ['error', {minScore: 0.9}],
+        },
+      },
+    },
+  };
+  
