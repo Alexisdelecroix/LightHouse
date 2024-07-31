@@ -10,8 +10,11 @@ module.exports = {
         screenEmulation: {
           mobile: false, // Pas d'émulation mobile
           disabled: false, // Active l'émulation d'écran
+          width: 1440, // Largeur de l'écran en pixels
+          height: 900, // Hauteur de l'écran en pixels
+          deviceScaleRatio: 1 // Densité de pixels standard
         },
-        emulatedUserAgent: false, // Utilise l'user agent de bureau par défaut
+        emulatedUserAgent: false,
       },
     },
     upload: {

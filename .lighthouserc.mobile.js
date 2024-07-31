@@ -1,4 +1,3 @@
-// .lighthouserc.mobile.js
 module.exports = {
   ci: {
     collect: {
@@ -6,7 +5,13 @@ module.exports = {
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        emulatedFormFactor: 'mobile', 
+        emulatedFormFactor: 'mobile',
+        screenEmulation: {
+          mobile: true,
+          width: 360,
+          height: 640,
+          deviceScaleRatio: 3  // Ratio d'échelle du périphérique (facteur de densité des pixels)
+        },
       },
     },
     upload: {
