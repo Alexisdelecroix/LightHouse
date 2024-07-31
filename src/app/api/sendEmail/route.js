@@ -19,6 +19,7 @@ export async function POST(request) {
     auth: {
       user: user,
       pass: pass,
+      connectionTimeout: 50000
     },
   });
 
