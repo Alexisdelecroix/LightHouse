@@ -30,13 +30,20 @@ jobs:
         env:
           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
+      - name: Upload Lighthouse results for mobile
+        run: lhci upload --config=.lighthouserc.mobile.js
+        env:
+          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
+
       - name: Collect Lighthouse results for desktop
         run: lhci collect --additive --config=.lighthouserc.desktop.js
         env:
           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
-      - name: Upload results
-        run: lhci upload
+      - name: Upload Lighthouse results for desktop
+        run: lhci upload --config=.lighthouserc.desktop.js
+        env:
+          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Assert results
         run: lhci assert
