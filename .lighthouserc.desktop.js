@@ -5,7 +5,8 @@ module.exports = {
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        preset: 'desktop',
+        preset: 'perf', 
+        emulatedFormFactor: 'desktop' 
       },
     },
     upload: {
