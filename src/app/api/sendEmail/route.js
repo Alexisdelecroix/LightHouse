@@ -7,6 +7,9 @@ export async function POST(request) {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
 
+  console.log(mobileReportUrl);
+  console.log(desktopReportUrl);
+
   if (!user || !pass) {
     return NextResponse.json({ error: 'Email user or password not set' }, { status: 500 });
   }
