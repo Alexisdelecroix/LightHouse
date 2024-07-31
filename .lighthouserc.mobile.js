@@ -1,12 +1,11 @@
 module.exports = {
   ci: {
     collect: {
-      url: ['https://www.flexbeton.fr/'],
+      url: [process.env.LIGHTHOUSE_URL],
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        preset: 'perf', 
-        emulatedFormFactor: 'mobile' 
+        preset: 'mobile',
       },
     },
     upload: {

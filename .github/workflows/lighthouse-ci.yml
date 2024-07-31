@@ -6,6 +6,7 @@ on:
 
 jobs:
   lhci:
+    name: Lighthouse
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +26,14 @@ jobs:
         run: npm install -g @lhci/cli
 
       - name: Collect Lighthouse results for mobile
-        run: lhci collect --config=.lighthouserc.mobile.js
+        run: lhci collect --additive --config=.lighthouserc.mobile.js
+        env:
+          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Collect Lighthouse results for desktop
-        run: lhci collect --config=.lighthouserc.desktop.js
+        run: lhci collect --additive --config=.lighthouserc.desktop.js
+        env:
+          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Upload results
         run: lhci upload
@@ -37,4 +42,4 @@ jobs:
         run: lhci assert
 
     env:
-      API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      API_TOKEN: ${{ secrets.API_TOKEN }}
