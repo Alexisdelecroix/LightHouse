@@ -26,24 +26,20 @@ jobs:
         run: npm install -g @lhci/cli
 
       - name: Collect Lighthouse results for mobile
-        run: lhci collect --additive --config=.lighthouserc.mobile.js
+        run: lhci collect --config=.lighthouserc.mobile.js
         env:
           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Upload Lighthouse results for mobile
         run: lhci upload --config=.lighthouserc.mobile.js
-        env:
-          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Collect Lighthouse results for desktop
-        run: lhci collect --additive --config=.lighthouserc.desktop.js
+        run: lhci collect --config=.lighthouserc.desktop.js
         env:
           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Upload Lighthouse results for desktop
         run: lhci upload --config=.lighthouserc.desktop.js
-        env:
-          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Assert results
         run: lhci assert
