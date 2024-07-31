@@ -1,3 +1,4 @@
+// .lighthouserc.desktop.js
 module.exports = {
   ci: {
     collect: {
@@ -5,9 +6,12 @@ module.exports = {
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        additive: "true",
-        locale: "fr-FR",
-				preset: "desktop",
+        formFactor: 'desktop', // Émule un ordinateur de bureau
+        screenEmulation: {
+          mobile: false, // Pas d'émulation mobile
+          disabled: false, // Active l'émulation d'écran
+        },
+        emulatedUserAgent: false, // Utilise l'user agent de bureau par défaut
       },
     },
     upload: {
@@ -22,4 +26,4 @@ module.exports = {
       },
     },
   },
-}
+};

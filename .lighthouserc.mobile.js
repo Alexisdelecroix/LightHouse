@@ -1,3 +1,4 @@
+// .lighthouserc.mobile.js
 module.exports = {
   ci: {
     collect: {
@@ -5,7 +6,7 @@ module.exports = {
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        emulatedFormFactor: 'mobile',
+        emulatedFormFactor: 'mobile', 
       },
     },
     upload: {
