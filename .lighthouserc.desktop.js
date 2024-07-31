@@ -5,7 +5,9 @@ module.exports = {
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        emulatedFormFactor: 'desktop',
+        additive: "true",
+        locale: "fr-FR",
+				preset: "desktop",
       },
     },
     upload: {
