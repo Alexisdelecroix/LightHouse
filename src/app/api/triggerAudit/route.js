@@ -11,13 +11,17 @@ export async function POST(request) {
     return NextResponse.json({ message: 'Email and URL are required' }, { status: 400 });
   }
 
+  console.log('Email:', email);
+console.log('URL:', url);
+
   const GITHUB_TOKEN = process.env.GITHUBTOKEN;
   const GITHUB_OWNER = 'Alexisdelecroix';
   const GITHUB_REPO = 'Project-LightHouse';
 
-  if (!GITHUB_TOKEN) {
-    return res.status(500).json({ message: 'GitHub token is not set' });
-  }
+
+if (!GITHUB_TOKEN) {
+  return NextResponse.json({ message: 'GitHub token is not set' }, { status: 500 });
+}
 
   console.log('Sending repository_dispatch event to GitHub...');
 
