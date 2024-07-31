@@ -1,3 +1,53 @@
+# name: Lighthouse CI
+
+# on:
+#   repository_dispatch:
+#     types: [trigger_lighthouse_ci]
+
+# jobs:
+#   lhci:
+#     name: Lighthouse
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: '18'
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Build project
+#         run: npm run build
+
+#       - name: Install Lighthouse CI
+#         run: npm install -g @lhci/cli
+
+#       - name: Collect Lighthouse results for mobile
+#         run: lhci collect --config=.lighthouserc.mobile.js
+#         env:
+#           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
+
+#       - name: Upload Lighthouse results for mobile
+#         run: lhci upload --config=.lighthouserc.mobile.js
+
+#       - name: Collect Lighthouse results for desktop
+#         run: lhci collect --config=.lighthouserc.desktop.js
+#         env:
+#           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
+
+#       - name: Upload Lighthouse results for desktop
+#         run: lhci upload --config=.lighthouserc.desktop.js
+
+#       - name: Assert results
+#         run: lhci assert
+
+#     env:
+#       API_TOKEN: ${{ secrets.API_TOKEN }}
+
+
 name: Lighthouse CI
 
 on:
@@ -31,7 +81,9 @@ jobs:
           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Upload Lighthouse results for mobile
-        run: lhci upload --config=.lighthouserc.mobile.js
+        id: upload_mobile
+        run: |
+          lhci upload --config=.lighthouserc.mobile.js | tee mobile_report_url.txt
 
       - name: Collect Lighthouse results for desktop
         run: lhci collect --config=.lighthouserc.desktop.js
@@ -39,10 +91,36 @@ jobs:
           LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
       - name: Upload Lighthouse results for desktop
-        run: lhci upload --config=.lighthouserc.desktop.js
+        id: upload_desktop
+        run: |
+          lhci upload --config=.lighthouserc.desktop.js | tee desktop_report_url.txt
+
+      - name: Extract mobile report URL
+        id: get_mobile_url
+        run: |
+          MOBILE_URL=$(grep -Eo 'https://storage.googleapis.com/[^ ]+' mobile_report_url.txt)
+          echo "MOBILE_URL=$MOBILE_URL" >> $GITHUB_ENV
+
+      - name: Extract desktop report URL
+        id: get_desktop_url
+        run: |
+          DESKTOP_URL=$(grep -Eo 'https://storage.googleapis.com/[^ ]+' desktop_report_url.txt)
+          echo "DESKTOP_URL=$DESKTOP_URL" >> $GITHUB_ENV
 
       - name: Assert results
         run: lhci assert
+
+      - name: Send email with reports
+        run: |
+          curl -X POST https://light-house-rho.vercel.app/api/sendEmail \
+          -H "Content-Type: application/json" \
+          -d '{
+                "mobileReportUrl": "${{ env.MOBILE_URL }}",
+                "desktopReportUrl": "${{ env.DESKTOP_URL }}",
+                "email": "${{ github.event.client_payload.email }}"
+              }'
+        env:
+          LIGHTHOUSE_URL: ${{ github.event.client_payload.url }}
 
     env:
       API_TOKEN: ${{ secrets.API_TOKEN }}
