@@ -5,13 +5,11 @@ module.exports = {
       startServerCommand: 'npm run start',
       numberOfRuns: 1,
       settings: {
-        preset: 'mobile',
         emulatedFormFactor: 'mobile',
-        timeout: 180000, 
       },
     },
     upload: {
-      target: 'temporary-public-storage', // Stockage temporaire public pour les rapports
+      target: 'temporary-public-storage',
     },
     assert: {
       assertions: {
