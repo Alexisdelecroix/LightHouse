@@ -4,11 +4,18 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   const { email, mobileReportUrl, desktopReportUrl } = await request.json();
 
+  const user = process.env.EMAIL_USER;
+  const pass = process.env.EMAIL_PASS;
+
+  if (!user || !pass) {
+    return NextResponse.json({ error: 'Email user or password not set' }, { status: 500 });
+  }
+
   let transporter = nodemailer.createTransport({
     service: 'hotmail',
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      user: user,
+      pass: pass,
     },
   });
 
