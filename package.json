@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-   
-    "vercel-build": "next build",
+    "postinstall": "prisma generate",
+ 
     "lighthouse:desktop": "yarn build && lhci collect --config=.lighthouserc.desktop.js && lhci upload && lhci assert",
     "lighthouse:mobile": "yarn build && lhci collect --config=.lighthouserc.mobile.js && lhci upload && lhci assert"
   },
