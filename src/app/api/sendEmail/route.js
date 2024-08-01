@@ -14,18 +14,20 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Email user or password not set' }, { status: 500 });
   }
 
-  let transporter = nodemailer.createTransport({
-    service: 'hotmail',
-    auth: {
-      user: user,
-      pass: pass,
-      connectionTimeout: 50000
-    },
+ const transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp-relay.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            user: user,
+            pass: pass
+        }
   });
 
   try {
     let info = await transporter.sendMail({
-      from: '"Lighthouse CI" <noreply@example.com>',
+      from: "Lighthouse CI",
       to: email,
       subject: 'Lighthouse CI Reports',
       html: `
