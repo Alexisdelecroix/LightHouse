@@ -16,7 +16,7 @@
 //   const [mobileScores, setMobileScores] = useState(null);
 //   const [desktopReportUrl, setDesktopReportUrl] = useState(null);
 //   const [mobileReportUrl, setMobileReportUrl] = useState(null);
-  
+
 
 //   const handleSendReport = async (e) => {
 //     e.preventDefault();
@@ -334,14 +334,14 @@ export default function GenerateReport() {
       });
 
       if (response.ok) {
-        setSuccessMessage("Audit triggered successfully.");
+        setSuccessMessage("Votre site est en cours d'analyse, vous recevrez très prochainement les rapports.");
       } else {
         const data = await response.json();
         throw new Error(data.message || "Failed to trigger audit.");
       }
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage("An error occurred. Please try again later.");
+      setErrorMessage("Une erreur s'est produite. Veuillez réessayer plus tard.");
     } finally {
       setIsLoading(false);
     }
@@ -353,14 +353,14 @@ export default function GenerateReport() {
         {isLoading && (
           <div className={style.loader}>
             <Image src={Animation} alt="Loading" width={150} />
-            <p>Please wait while we process your request...</p>
+            <p>Veuillez patienter pendant le traitement de votre demande...</p>
           </div>
         )}
-        
+
         {!isLoading && !successMessage && (
           <section className={style.container}>
             <form className={style.form} onSubmit={handleSendReport}>
-              <p className={style.titre_form}>Receive the report</p>
+              <p className={style.titre_form}>Analyser votre site</p>
               {errorMessage && <p className={style.error_message}>{errorMessage}</p>}
               <div className={style.block_input}>
                 <input
@@ -383,7 +383,7 @@ export default function GenerateReport() {
                 />
               </div>
               <div className={style.block_btn}>
-                <button type="submit" className={style.btn}>Submit</button>
+                <button type="submit" className={style.btn}>Envoyer</button>
               </div>
             </form>
           </section>
@@ -392,7 +392,7 @@ export default function GenerateReport() {
         {successMessage && (
           <div className={style.success_message}>
             <p>{successMessage}</p>
-            <button className={style.btn} onClick={() => window.location.reload()}>Trigger another audit</button>
+            <button className={style.btn} onClick={() => window.location.reload()}>Nouvelle Analyse</button>
           </div>
         )}
       </section>

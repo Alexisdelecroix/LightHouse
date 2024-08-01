@@ -3,28 +3,28 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   const { email, url } = await request.json();
 
-  console.log(email, url);
+  // console.log(email, url);
 
   if (!email || !url) {
     return NextResponse.json({ message: 'Email and URL are required' }, { status: 400 });
   }
 
-  console.log('Email:', email);
-console.log('URL:', url);
+  // console.log('Email:', email);
+  // console.log('URL:', url);
 
   const GITHUB_TOKEN = process.env.GITHUBTOKEN;
-  const GITHUB_OWNER = 'Alexisdelecroix';
-  const GITHUB_REPO = 'Project-LightHouse';
+  // const GITHUB_OWNER = 'Alexisdelecroix';
+  // const GITHUB_REPO = 'Project-LightHouse';
 
 
-if (!GITHUB_TOKEN) {
-  return NextResponse.json({ message: 'GitHub token is not set' }, { status: 500 });
-}
+  if (!GITHUB_TOKEN) {
+    return NextResponse.json({ message: 'GitHub token is not set' }, { status: 500 });
+  }
 
   console.log('Sending repository_dispatch event to GitHub...');
 
   try {
-    const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`, {
+    const response = await fetch(`https://api.github.com/repos/Alexisdelecroix/Project-LightHouse/dispatches`, {
       method: 'POST',
       headers: {
         'Accept': 'application/vnd.github.v3+json',
