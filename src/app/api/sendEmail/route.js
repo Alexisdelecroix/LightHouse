@@ -10,6 +10,9 @@ export async function POST(request) {
   console.log(mobileReportUrl);
   console.log(desktopReportUrl);
 
+  console.log(user);
+  console.log(pass);
+
   if (!user || !pass) {
     return NextResponse.json({ error: 'Email user or password not set' }, { status: 500 });
   }
@@ -20,8 +23,8 @@ export async function POST(request) {
         port: 465,
         secure: true,
         auth: {
-            user: user,
-            pass: pass
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         }
   });
 
