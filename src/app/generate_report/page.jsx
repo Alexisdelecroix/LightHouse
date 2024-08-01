@@ -334,7 +334,7 @@ export default function GenerateReport() {
       });
 
       if (response.ok) {
-        setSuccessMessage("Votre site est en cours d'analyse, vous recevrez très prochainement les rapports.");
+        setSuccessMessage("Votre site est en cours d'analyse, vous recevrez très prochainement les rapports par mail.");
       } else {
         const data = await response.json();
         throw new Error(data.message || "Failed to trigger audit.");
@@ -390,8 +390,8 @@ export default function GenerateReport() {
         )}
 
         {successMessage && (
-          <div className={style.success_message}>
-            <p>{successMessage}</p>
+          <div >
+            <p className={style.success_message}>{successMessage}</p>
             <button className={style.btn} onClick={() => window.location.reload()}>Nouvelle Analyse</button>
           </div>
         )}
